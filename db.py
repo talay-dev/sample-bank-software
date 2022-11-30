@@ -7,15 +7,15 @@ def open_database():
 def create_table():
     conn = open_database()
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS clients (name text, surname text, age integer, client_number integer, password text)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS clients (name text, surname text, age integer, client_number integer, password text, balance real)''')
     conn.commit()
     conn.close()
 
 #add a new client to the database
-def add_client(name, surname, age, client_number, password):
+def add_client(name, surname, age, client_number, password, balance=0):
     conn = open_database()
     c = conn.cursor()
-    c.execute("INSERT INTO clients VALUES (?, ?, ?, ?, ?)", (name, surname, age, client_number, password))
+    c.execute("INSERT INTO clients VALUES (?, ?, ?, ?, ?, ?)", (name, surname, age, client_number, password, balance))
     conn.commit()
     conn.close()
 
@@ -28,10 +28,10 @@ def delete_client(client_number):
     conn.close()
 
 #update a client's details in the database using the client number
-def update_client(name, surname, age, client_number, password):
+def update_client(name, surname, age, client_number, password, balance):
     conn = open_database()
     c = conn.cursor()
-    c.execute("UPDATE clients SET name = ?, surname = ?, age = ?, password = ? WHERE client_number = ?", (name, surname, age, password, client_number))
+    c.execute("UPDATE clients SET name = ?, surname = ?, age = ?, password = ?, balance = ? WHERE client_number = ?", (name, surname, age, password, client_number, balance))
     conn.commit()
     conn.close()
 
@@ -43,6 +43,16 @@ def search_client(client_number):
     client = c.fetchone()
     conn.close()
     return client
+
+
+# a function that change only the balance of a client in the database
+def update_balance(client_number, balance):
+    conn = open_database()
+    c = conn.cursor()
+    c.execute("UPDATE clients SET balance = ? WHERE client_number = ?", (balance, client_number))
+    conn.commit()
+    conn.close()
+
 
 
 #return all clients in the database with a specific name
