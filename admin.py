@@ -95,3 +95,10 @@ def deposit(client_number, amount):
        #change the balance in the database
         db.update_balance(client_number, balance)
         return 'Deposit successful!'
+
+def printable_search(client_number):
+    client = db.search_client(client_number)
+    if client is not None:
+        return f'Name: {client[0]} |Surname: {client[1]} |Age: {client[2]} |Balance: {client[5]}'
+    else: 
+        return 'Client not found!'

@@ -53,6 +53,14 @@ def update_balance(client_number, balance):
     conn.commit()
     conn.close()
 
+def get_all_clients():
+    conn = open_database()
+    c = conn.cursor()
+    c.execute("SELECT * FROM clients")
+    clients = c.fetchall()
+    conn.close()
+    return clients
+    
 
 
 #return all clients in the database with a specific name
